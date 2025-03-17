@@ -50,10 +50,11 @@ export const useForm = <T extends Record<string, any>>(
       formData,
       handleInputChange,
       handleSubmit,
+      setSubmitError,
       fieldsError,
       submitError,
     }),
-    [formData, fieldsError, submitError, handleInputChange, handleSubmit, resetForm]
+    [formData, fieldsError, submitError, handleInputChange, handleSubmit, resetForm, setSubmitError]
   );
 
   return formControls;

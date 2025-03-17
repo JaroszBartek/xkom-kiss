@@ -1,5 +1,7 @@
+import { useCallback } from 'react';
 import { Button, Form, FormField, FormFieldError } from '../../../../components';
 import { useForm } from '../../../../hooks/useForm';
+import { checkEmailExists } from '../../../../utils';
 import { User } from '../../User';
 import { useUsersContext } from '../../store';
 
@@ -10,18 +12,31 @@ const initialState: Omit<User, 'id'> = {
 };
 
 export const AddUserForm = () => {
-  const { dispatch } = useUsersContext();
+  const { state, dispatch } = useUsersContext();
 
-  const addUser = (formData: Omit<User, 'id'>) => {
-    dispatch({ type: 'ADD_USER', payload: { id: crypto.randomUUID(), ...formData } });
-  };
+  const addUser = useCallback(
+    (formData: Omit<User, 'id'>) => {
+      dispatch({ type: 'ADD_USER', payload: { id: crypto.randomUUID(), ...formData } });
+    },
+    [dispatch]
+  );
 
-  const { formData, submitError, fieldsError, handleInputChange, handleSubmit } = useForm<
-    Omit<User, 'id'>
-  >(initialState, addUser);
+  const { formData, submitError, fieldsError, handleInputChange, handleSubmit, setSubmitError } =
+    useForm<Omit<User, 'id'>>(initialState, addUser);
+
+  const withEmailValidation = useCallback(
+    (e: React.FormEvent<HTMLFormElement>, callback) => {
+      e.preventDefault();
+      if (checkEmailExists(state, formData.email)) {
+        return setSubmitError('Podany Email istnieje');
+      }
+      return callback(e);
+    },
+    [state, formData]
+  );
 
   return (
-    <Form noValidate onSubmit={handleSubmit}>
+    <Form noValidate onSubmit={e => withEmailValidation(e, handleSubmit)}>
       <FormField
         id="add-user-form-email"
         label="E-mail"
