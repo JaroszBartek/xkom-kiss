@@ -1,54 +1,34 @@
 # React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Uruchom `npm install` i `npm run dev` żeby wystartować aplikację.
 
-Currently, two official plugins are available:
+# Komentarz do Architektury Aplikacji
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Layout wydawał się bardzo prosty, dlatego chciałem jak najwięcej zrobić w czystym Reactcie bez instalowania dodatkowych paczek. Chciałem też pokazać, że rozumiem, jakie gotowe paczki rozwiązują konkretne problemy – normalnie nigdy nie tworzyłbym wszystkiego od zera w aplikacji produkcyjnej. Poniżej opisuję, czego bym użył do tego zadania i dlaczego:
 
-## Expanding the ESLint configuration
+1. **Gotowe Biblioteki i Narzędzia (Wersja Produkcyjna)**
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+   - **Tailwind + Shadcn**: Do stylowania użyłbym Tailwind CSS oraz Shadcn UI. Shadcn importuje tylko te komponenty, które są potrzebne, a jednocześnie oferuje gotowe rozwiązania pod kątem accessibility, wariantów oraz obsługi stanów (focus, hover, disabled itp.). Dzięki temu można w bardzo krótkim czasie, nawet w 1h, stworzyć kompletny formularz, korzystający z react-hook-form i ZOD do walidacji.
+   - **React-hook-form** bardzo lekka i szybka biblioteka. -**ZOD** oparta na TS biblioteka do walidacji schemy formularza.
+   - **Zustand**: Do zarządzania stanem aplikacji użyłbym Zustanda. To lekka i bardzo szybka biblioteka, która wykorzystuje architekturę Reduxa, ale cały store (z akcjami oraz zapisem do localStorage) można zaimplementować w jednym pliku w około 20 linijkach kodu. To dodatkowe 15 minut pracy, ale zapewnia czysty i skalowalny kod.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+2. **Decyzje w TYM Projekcie**
+   - **Prostota i czytelność**: W tym zadaniu postawiłem na czysty React, wykorzystując Context API i własne hooki. Wiem, że w rzeczywistym projekcie skorzystałbym z wymienionych wcześniej bibliotek, ale celem było pokazanie, jak samodzielnie rozwiązać problemy.
+   - **Struktura projektu**:
+     - **Components**: Ogólne komponenty UI (bez logiki biznesowej) znajdują się w folderze `components`.
+     - **Store**: Globalne zarządzanie stanem, imitujące architekturę Reduxa, jest realizowane przy pomocy Context API i umieszczone w folderze `store`.
+     - **Features**: Wszystko, co dotyczy użytkowników, umieściłem w katalogu `features/user` – na wzór Domain Driven Development.
+     - **Hooks**: Uniwersalne hooki, jak np. `useFormHook` obsługujący całą logikę formularza, znajdują się w folderze `hooks`.
+     - **Utils**: Wszystkie pomocnicze funkcje JavaScript zostały umieszczone w folderze `utils`.
+   - **Style**:
+     - Zdecydowałem się na użycie czystego CSS (CSS Modules) zamiast rozwiązań opartych na JavaScript do stylowania, gdyż React + Vite obsługuje CSS Modules bez żadnej dodatkowej konfiguracji. Chociaż dynamiczne style oparte na propsach mogą być uciążliwe, prostota i przewidywalność czystego CSS były tu kluczowe. Sprawdziłem na stronie x-komu jak zaimplementowane są labele z użyciem gradientu jako tła. Jak kiedyś podobną rzecz robiłem na wzór MaterialUI z użyciem fieldset. Ale nie oto chodziło chyba w zadaniu.
+   - **Formularz**:
+     - Stworzyłem dedykowany hook, który obsługuje konkretny scenariusz formularza. Nie jest to rozwiązanie "szwajcarskiego scyzoryka" – jest to proste rozwiązanie odpowiadające na konkretne potrzeby. I sygnalizujące tylko na co warto zwrócić uwagę. Przez ograniczony czas wszystko jest uproszczone i na pewno są rzeczy których nie uwzględniłem. Już na samym początku zdecydowałem, że inputy mają być kontrolowane.
+     - Implementacja walidacji jest nieco naiwna i obsługuje tylko kilka przypadków, ale to celowy kompromis – pokazuje, że wszystko można napisać "z palca".
+     - Dodałem także symulację walidacji po stronie serwera, żeby wykluczyć duplikaty email i pokazać, że ważna jest walidacja na kliencie i na serwerze.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- **Stan Aplikacji**
+  - Do obsługi całej aplikacji wystarczyłby jeden `useState` w komponencie `<UsersSection>`. Chciałem pokazać,że znam Reduxa ale nie chciałem instalować i setupować go w tym projekcie.
+  - Na końcu i tak wszystko wrzuciłem do jednego katalogu razem z obsługą `localeStorage`. Spokojnie mogła by to być wydzielona osobna warstwa aplikacji.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+Podsumowując, chociaż rozwiązanie stworzone "od zera" zajęło więcej niż myślałem oraz zwiększyło skomplikowanie projektu to chciałem pokazać zrozumienie tematu oraz swoje decyzje. W prawdziwym projekcie korzystałbym z zaawansowanych bibliotek i gotowych baz komponentów, aby skrócić czas developmentu i zwiększyć skalowalność oraz dostępność aplikacji.
