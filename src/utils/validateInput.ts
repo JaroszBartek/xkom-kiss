@@ -2,7 +2,7 @@ export const validateInput = (target: HTMLInputElement): string | undefined => {
   const { type, value, required, minLength, maxLength } = target;
 
   if (required && value.trim() === '') {
-    return 'Pole jest wymagane';
+    return 'To pole jest wymagane';
   }
 
   if (type === 'tel') {

@@ -4,6 +4,9 @@ export const ariaDescribedbyFactory = (
   hasError: boolean
 ): string | undefined => {
   let ariaDescribedby: string = '';
+  if (!id) {
+    return ariaDescribedby;
+  }
   if (!hasDescription && !hasError) {
     return ariaDescribedby;
   }
