@@ -1,0 +1,16 @@
+.formField {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.formDescription {
+  margin: 0;
+  font-size: var(--font-size-small, 12px);
+}
+
+.formError {
+  margin: 0;
+  font-size: var(--font-size-small, 12px);
+  color: var(--color-error);
+}
