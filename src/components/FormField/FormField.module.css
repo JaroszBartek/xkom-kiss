@@ -2,15 +2,24 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  margin-bottom: 1.8rem;
+}
+
+input:focus ~ label,
+input:not(:placeholder-shown) ~ label {
+  transform: translateY(calc(-50% - 0.5rem)) scale(0.8);
 }
 
 .formDescription {
-  margin: 0;
+  margin: 0.3rem 0 0;
   font-size: var(--font-size-small, 12px);
 }
 
 .formError {
-  margin: 0;
+  margin: 0.3rem 0 0;
   font-size: var(--font-size-small, 12px);
   color: var(--color-error);
+  position: absolute;
+  left: 0;
+  bottom: -1.1rem;
 }

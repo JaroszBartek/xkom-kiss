@@ -1,7 +1,21 @@
 import React from 'react';
 import styles from './FormField.module.css';
-import { Input } from '../Input/Input';
 import { Label } from '../Label';
+import { Input } from '../Input';
+
+const ariaDescribedbyFactory = (id: string, hasDescription: boolean, hasError: boolean): string => {
+  let ariaDescribedby: string = '';
+  if (!hasDescription && !hasError) {
+    return ariaDescribedby;
+  }
+  if (hasDescription) {
+    ariaDescribedby = `${id}-description`;
+  }
+  if (hasError) {
+    ariaDescribedby = `${ariaDescribedby || ''} ${id}-error`;
+  }
+  return ariaDescribedby;
+};
 
 type FormFieldProps = React.DetailedHTMLProps<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -21,12 +35,46 @@ export const FormField = ({
   description,
   ...restProps
 }: FormFieldProps) => {
+  const invalid = !!error;
+  const valid = !invalid && !!value;
+  const ariaDescribedby = ariaDescribedbyFactory(id, !!description, !!error);
+
   return (
     <div className={styles.formField}>
-      <Input id={id} {...restProps} error={error} value={value} placeholder=" " />
-      <Label htmlFor={id}>{label}</Label>
-      {description && <p className={styles.formDescription}>{description}</p>}
-      {error && <p className={styles.formError}>{error}</p>}
+      <Input
+        id={id}
+        {...restProps}
+        invalid={invalid}
+        valid={valid}
+        value={value}
+        placeholder=" "
+        aria-describedby={ariaDescribedby}
+        aria-invalid={invalid}
+      />
+      <Label htmlFor={id} invalid={invalid}>
+        {label}
+      </Label>
+      {description && (
+        <FormFieldDescription id={`${id}-description`}>{description}</FormFieldDescription>
+      )}
+      {error && <FormFieldError id={`${id}-error`}>{error}</FormFieldError>}
     </div>
   );
 };
+
+type FormFieldHelpersProps = {
+  id: string;
+  children: React.ReactNode;
+};
+
+export const FormFieldDescription = ({ id, children }: FormFieldHelpersProps) => (
+  <p id={id} className={styles.formDescription}>
+    {children}
+  </p>
+);
+
+export const FormFieldError = ({ id, children }: FormFieldHelpersProps) => (
+  <p id={id} className={styles.formError}>
+    {children}
+  </p>
+);

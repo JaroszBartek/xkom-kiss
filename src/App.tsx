@@ -1,12 +1,12 @@
 import { AppLayout } from './components';
-import { UsersSection } from './features/user';
+import { AddUserForm, UsersSection } from './features/user';
 import './Theme.css';
 
 function App() {
   return (
     <AppLayout>
       <UsersSection>
-        <div>form</div>
+        <AddUserForm />
         <div>List</div>
       </UsersSection>
     </AppLayout>

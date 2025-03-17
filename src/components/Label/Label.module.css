@@ -6,3 +6,7 @@
   left: 0.5rem;
   transition: var(--transition);
 }
+
+.label.error {
+  color: var(--color-error);
+}
