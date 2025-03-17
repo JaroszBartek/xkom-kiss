@@ -1,5 +1,5 @@
 import { AppLayout } from './components';
-import { AddUserForm, UsersSection } from './features/user';
+import { AddUserForm, UserList, UsersSection } from './features/user';
 import './Theme.css';
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
     <AppLayout>
       <UsersSection>
         <AddUserForm />
-        <div>List</div>
+        <UserList />
       </UsersSection>
     </AppLayout>
   );
