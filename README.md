@@ -4,12 +4,13 @@ Uruchom `npm install` i `npm run dev` żeby wystartować aplikację.
 
 # Komentarz do Architektury Aplikacji
 
-Layout wydawał się bardzo prosty, dlatego chciałem jak najwięcej zrobić w czystym Reactcie bez instalowania dodatkowych paczek. Chciałem też pokazać, że rozumiem, jakie gotowe paczki rozwiązują konkretne problemy – normalnie nigdy nie tworzyłbym wszystkiego od zera w aplikacji produkcyjnej. Poniżej opisuję, czego bym użył do tego zadania i dlaczego:
+Layout wydawał się bardzo prosty, dlatego chciałem jak najwięcej zrobić w czystym React.js. Bez instalowania dodatkowych paczek. Chciałem też pokazać, że rozumiem, jakie gotowe biblioteki rozwiązują problemy – normalnie nigdy nie tworzyłbym wszystkiego od zera w aplikacji produkcyjnej. Poniżej opisuję, czego bym użył do tego zadania i dlaczego:
 
 1. **Gotowe Biblioteki i Narzędzia (Wersja Produkcyjna)**
 
    - **Tailwind + Shadcn**: Do stylowania użyłbym Tailwind CSS oraz Shadcn UI. Shadcn importuje tylko te komponenty, które są potrzebne, a jednocześnie oferuje gotowe rozwiązania pod kątem accessibility, wariantów oraz obsługi stanów (focus, hover, disabled itp.). Dzięki temu można w bardzo krótkim czasie, nawet w 1h, stworzyć kompletny formularz, korzystający z react-hook-form i ZOD do walidacji.
-   - **React-hook-form** bardzo lekka i szybka biblioteka. -**ZOD** oparta na TS biblioteka do walidacji schemy formularza.
+   - **React-hook-form** bardzo lekka i szybka biblioteka.
+   - **ZOD** oparta na TS biblioteka do walidacji schemy formularza.
    - **Zustand**: Do zarządzania stanem aplikacji użyłbym Zustanda. To lekka i bardzo szybka biblioteka, która wykorzystuje architekturę Reduxa, ale cały store (z akcjami oraz zapisem do localStorage) można zaimplementować w jednym pliku w około 20 linijkach kodu. To dodatkowe 15 minut pracy, ale zapewnia czysty i skalowalny kod.
 
 2. **Decyzje w TYM Projekcie**
@@ -21,7 +22,7 @@ Layout wydawał się bardzo prosty, dlatego chciałem jak najwięcej zrobić w c
      - **Hooks**: Uniwersalne hooki, jak np. `useFormHook` obsługujący całą logikę formularza, znajdują się w folderze `hooks`.
      - **Utils**: Wszystkie pomocnicze funkcje JavaScript zostały umieszczone w folderze `utils`.
    - **Style**:
-     - Zdecydowałem się na użycie czystego CSS (CSS Modules) zamiast rozwiązań opartych na JavaScript do stylowania, gdyż React + Vite obsługuje CSS Modules bez żadnej dodatkowej konfiguracji. Chociaż dynamiczne style oparte na propsach mogą być uciążliwe, prostota i przewidywalność czystego CSS były tu kluczowe. Sprawdziłem na stronie x-komu jak zaimplementowane są labele z użyciem gradientu jako tła. Jak kiedyś podobną rzecz robiłem na wzór MaterialUI z użyciem fieldset. Ale nie oto chodziło chyba w zadaniu.
+     - Zdecydowałem się na użycie czystego CSS (CSS Modules) zamiast rozwiązań opartych na JavaScript do stylowania. React + Vite obsługuje CSS Modules bez żadnej dodatkowej konfiguracji. Chociaż dynamiczne style oparte na propsach mogą być uciążliwe, to nie wiem czy coś w świecie frontendu zmienia się szybciej niż biblioteki do CSS. Dlatego na start CSS Modules są ok. Sprawdziłem na stronie x-komu jak zaimplementowane są labele z użyciem gradientu jako tła. Jak kiedyś podobną rzecz robiłem na wzór MaterialUI z użyciem html fieldset. Ale nie oto chodziło chyba w zadaniu, a nie chciałem kopiować gotowego kodu.
    - **Formularz**:
      - Stworzyłem dedykowany hook, który obsługuje konkretny scenariusz formularza. Nie jest to rozwiązanie "szwajcarskiego scyzoryka" – jest to proste rozwiązanie odpowiadające na konkretne potrzeby. I sygnalizujące tylko na co warto zwrócić uwagę. Przez ograniczony czas wszystko jest uproszczone i na pewno są rzeczy których nie uwzględniłem. Już na samym początku zdecydowałem, że inputy mają być kontrolowane.
      - Implementacja walidacji jest nieco naiwna i obsługuje tylko kilka przypadków, ale to celowy kompromis – pokazuje, że wszystko można napisać "z palca".
