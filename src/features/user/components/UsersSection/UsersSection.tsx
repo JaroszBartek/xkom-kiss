@@ -1,10 +1,13 @@
 import { ReactNode } from 'react';
 import styles from './UsersSection.module.css';
+import { UsersProvider } from '../../store';
 
 type UsersSectionProps = {
   children: ReactNode;
 };
 
 export const UsersSection = ({ children }: UsersSectionProps) => (
-  <section className={styles.section}>{children}</section>
+  <UsersProvider>
+    <section className={styles.section}>{children}</section>
+  </UsersProvider>
 );
