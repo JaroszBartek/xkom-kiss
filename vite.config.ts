@@ -1,17 +1,23 @@
-/// <reference types="vitest/config" />
 import { defineConfig } from 'vite';
+import { defineConfig as testConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 
-// https://vite.dev/config/
-export default defineConfig({
+const viteConfig = defineConfig({
   plugins: [react()],
+});
+
+const vitestConfig = testConfig({
   test: {
+    coverage: {
+      reporter: ['text', 'json', 'html'],
+    },
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./src/test/setup.ts'],
-    coverage: {
-      reporter: ['text', 'json', 'html'],
-      exclude: ['node_modules/', 'src/test/setup.ts'],
-    },
   },
 });
+
+export default {
+  ...viteConfig,
+  ...vitestConfig,
+};
