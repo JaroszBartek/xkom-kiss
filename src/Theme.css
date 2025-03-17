@@ -2,6 +2,8 @@
   --color-primary: #0384f5;
   --color-secondary: #bababa;
   --color-background: #f7f7f7;
+  --color-error: #ce0606;
+  --color-success: #009070;
   --color-white: #ffffff;
   --color-black: #1f1e1e;
 
@@ -9,6 +11,15 @@
   --font-size-small: 12px;
 
   --line-height: 1.5;
+
+  --section-width: 50rem;
+
+  --border-width: 1px;
+  --border-style: solid;
+
+  --border-radius: 0.5rem;
+
+  --transition: 0.1s ease-out;
 }
 
 body {
