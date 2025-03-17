@@ -6,6 +6,6 @@ export type ButtonProps = React.DetailedHTMLProps<
   HTMLButtonElement
 > & { children: React.ReactNode };
 
-export const Button = ({ children }: ButtonProps) => {
-  return <button className={styles.button}>{children}</button>;
+export const Button = (props: ButtonProps) => {
+  return <button className={styles.button} {...props} />;
 };

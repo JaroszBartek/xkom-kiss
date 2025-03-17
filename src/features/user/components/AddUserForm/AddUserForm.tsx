@@ -1,4 +1,4 @@
-import { Button, Form, FormField } from '../../../../components';
+import { Button, Form, FormField, FormFieldError } from '../../../../components';
 import { useForm } from '../../../../hooks/useForm';
 import { User } from '../../User';
 import { useUsersContext } from '../../store';
@@ -16,10 +16,9 @@ export const AddUserForm = () => {
     dispatch({ type: 'ADD_USER', payload: { id: crypto.randomUUID(), ...formData } });
   };
 
-  const { formData, formErrors, handleInputChange, handleSubmit } = useForm<Omit<User, 'id'>>(
-    initialState,
-    addUser
-  );
+  const { formData, submitError, fieldsError, handleInputChange, handleSubmit } = useForm<
+    Omit<User, 'id'>
+  >(initialState, addUser);
 
   return (
     <Form noValidate onSubmit={handleSubmit}>
@@ -29,8 +28,9 @@ export const AddUserForm = () => {
         type="email"
         name="email"
         value={formData.email}
-        error={formErrors.email}
+        error={fieldsError.email}
         onChange={handleInputChange}
+        required
       />
       <FormField
         id="add-user-form-firstName"
@@ -38,21 +38,27 @@ export const AddUserForm = () => {
         type="text"
         name="firstName"
         value={formData.firstName}
-        error={formErrors.firstName}
+        error={fieldsError.firstName}
         onChange={handleInputChange}
+        required
+        minLength={2}
       />
       <FormField
         id="add-user-form-phoneNumber"
         label="Numer"
         type="tel"
         name="phoneNumber"
-        pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}"
         description="Numer 9 cyfrowy"
         value={formData.phoneNumber}
-        error={formErrors.phoneNumber}
+        error={fieldsError.phoneNumber}
         onChange={handleInputChange}
+        required
+        minLength={9}
+        maxLength={9}
       />
       <Button type="submit">Zapisz</Button>
+
+      {submitError && <FormFieldError>{submitError}</FormFieldError>}
     </Form>
   );
 };

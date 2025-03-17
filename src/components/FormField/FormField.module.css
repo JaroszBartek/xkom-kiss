@@ -3,6 +3,11 @@
   flex-direction: column;
   position: relative;
   margin-bottom: 1.8rem;
+  .formError {
+    position: absolute;
+    left: 0;
+    bottom: -1.1rem;
+  }
 }
 
 input:focus ~ label,
@@ -19,7 +24,4 @@ input:not(:placeholder-shown) ~ label {
   margin: 0.3rem 0 0;
   font-size: var(--font-size-small, 12px);
   color: var(--color-error);
-  position: absolute;
-  left: 0;
-  bottom: -1.1rem;
 }

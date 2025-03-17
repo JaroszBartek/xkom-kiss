@@ -1,33 +1,23 @@
-import { useCallback, useState } from 'react';
-
-const isInputValid = (type: string, value: string) => {
-  switch (type) {
-    case 'email':
-      return value?.includes('@');
-    case 'text':
-      return value?.length > 1;
-    case 'tel':
-      return value?.length === 9;
-    default:
-      return true;
-  }
-};
+import { useCallback, useMemo, useState } from 'react';
+import { resetFormData, validateInput } from '../utils';
 
 export const useForm = <T extends Record<string, any>>(
   initialState: T = {} as T,
   onSubmit: (formData: T) => void
 ) => {
   const [formData, setFormData] = useState<T>(initialState);
-  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [fieldsError, setFieldsError] = useState<Record<string, string>>({});
+  const [submitError, setSubmitError] = useState<string | undefined>(undefined);
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!isInputValid(e.target.type, e.target.value)) {
-      setFormErrors(prevState => ({
+    const fieldError = validateInput(e.target);
+    if (fieldError) {
+      setFieldsError(prevState => ({
         ...prevState,
-        [e.target.name]: `${e.target.name} field error!`,
+        [e.target.name]: fieldError,
       }));
     } else {
-      setFormErrors(prevState => {
+      setFieldsError(prevState => {
         const { [e.target.name]: _, ...newState } = prevState;
         return newState;
       });
@@ -35,30 +25,36 @@ export const useForm = <T extends Record<string, any>>(
     setFormData(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
   }, []);
 
-  const resetForm = useCallback(
-    () =>
-      setFormData(
-        Object.keys(initialState).reduce(
-          (acc, key) => ({
-            ...acc,
-            [key]: '',
-          }),
-          {} as T
-        )
-      ),
-    [initialState]
+  const resetForm = useCallback(() => setFormData(resetFormData<T>(initialState)), [initialState]);
+
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+
+      if (Object.keys(fieldsError).length > 0) {
+        return setSubmitError('Sprawdź poprawność wszystkich inputów');
+      }
+
+      if (Object.values(formData).some(x => x === '')) {
+        return setSubmitError('Wszystkie pola są wymagane');
+      }
+
+      onSubmit(formData);
+      resetForm();
+    },
+    [formData, fieldsError, onSubmit, resetForm]
   );
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const hasErrors = Object.keys(formErrors).length > 0;
-    if (hasErrors) {
-      return;
-    }
+  const formControls = useMemo(
+    () => ({
+      formData,
+      handleInputChange,
+      handleSubmit,
+      fieldsError,
+      submitError,
+    }),
+    [formData, fieldsError, submitError, handleInputChange, handleSubmit, resetForm]
+  );
 
-    onSubmit(formData);
-    resetForm();
-  };
-
-  return { formData, handleInputChange, handleSubmit, formErrors };
+  return formControls;
 };

@@ -2,20 +2,7 @@ import React from 'react';
 import styles from './FormField.module.css';
 import { Label } from '../Label';
 import { Input } from '../Input';
-
-const ariaDescribedbyFactory = (id: string, hasDescription: boolean, hasError: boolean): string => {
-  let ariaDescribedby: string = '';
-  if (!hasDescription && !hasError) {
-    return ariaDescribedby;
-  }
-  if (hasDescription) {
-    ariaDescribedby = `${id}-description`;
-  }
-  if (hasError) {
-    ariaDescribedby = `${ariaDescribedby || ''} ${id}-error`;
-  }
-  return ariaDescribedby;
-};
+import { ariaDescribedbyFactory } from '../../utils';
 
 type FormFieldProps = React.DetailedHTMLProps<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -63,7 +50,7 @@ export const FormField = ({
 };
 
 type FormFieldHelpersProps = {
-  id: string;
+  id?: string;
   children: React.ReactNode;
 };
 
