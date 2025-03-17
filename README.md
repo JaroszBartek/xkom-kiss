@@ -27,9 +27,11 @@ Layout wydawał się bardzo prosty, dlatego chciałem jak najwięcej zrobić w c
      - Stworzyłem dedykowany hook, który obsługuje konkretny scenariusz formularza. Nie jest to rozwiązanie "szwajcarskiego scyzoryka" – jest to proste rozwiązanie odpowiadające na konkretne potrzeby. I sygnalizujące tylko na co warto zwrócić uwagę. Przez ograniczony czas wszystko jest uproszczone i na pewno są rzeczy których nie uwzględniłem. Już na samym początku zdecydowałem, że inputy mają być kontrolowane.
      - Implementacja walidacji jest nieco naiwna i obsługuje tylko kilka przypadków, ale to celowy kompromis – pokazuje, że wszystko można napisać "z palca".
      - Dodałem także symulację walidacji po stronie serwera, żeby wykluczyć duplikaty email i pokazać, że ważna jest walidacja na kliencie i na serwerze.
-
-- **Stan Aplikacji**
-  - Do obsługi całej aplikacji wystarczyłby jeden `useState` w komponencie `<UsersSection>`. Chciałem pokazać,że znam Reduxa ale nie chciałem instalować i setupować go w tym projekcie.
-  - Na końcu i tak wszystko wrzuciłem do jednego katalogu razem z obsługą `localeStorage`. Spokojnie mogła by to być wydzielona osobna warstwa aplikacji.
+   - **Stan Aplikacji**:
+     - Do obsługi całej aplikacji wystarczyłby jeden `useState` w komponencie `<UsersSection>`. Chciałem pokazać,że znam Reduxa ale nie chciałem instalować i setupować go w tym projekcie.
+     - Na końcu i tak wszystko wrzuciłem do jednego katalogu razem z obsługą `localeStorage`. Spokojnie mogła by to być wydzielona osobna warstwa aplikacji.
+   - **Testy**:
+     - Największą wadą pisania wszystkiego samodzielnie jest to, że przyzwoitość nakazuje dopisać testy.
+     - Ja zawsze pracowałem z Jest ale w tym projekcie użyłem Vitest.
 
 Podsumowując, chociaż rozwiązanie stworzone "od zera" zajęło więcej niż myślałem oraz zwiększyło skomplikowanie projektu to chciałem pokazać zrozumienie tematu oraz swoje decyzje. W prawdziwym projekcie korzystałbym z zaawansowanych bibliotek i gotowych baz komponentów, aby skrócić czas developmentu i zwiększyć skalowalność oraz dostępność aplikacji.
