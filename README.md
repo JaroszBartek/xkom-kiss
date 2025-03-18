@@ -30,8 +30,10 @@ Layout wydawał się bardzo prosty, dlatego chciałem jak najwięcej zrobić w c
    - **Stan Aplikacji**:
      - Do obsługi całej aplikacji wystarczyłby jeden `useState` w komponencie `<UsersSection>`. Chciałem pokazać,że znam Reduxa ale nie chciałem instalować i setupować go w tym projekcie.
      - Na końcu i tak wszystko wrzuciłem do jednego katalogu razem z obsługą `localeStorage`. Spokojnie mogła by to być wydzielona osobna warstwa aplikacji.
+     - Zastosowałem normalizację stanu.
    - **Testy**:
      - Największą wadą pisania wszystkiego samodzielnie jest to, że przyzwoitość nakazuje dopisać testy.
      - Ja zawsze pracowałem z Jest ale w tym projekcie użyłem Vitest.
+     - Nie byłem w stanie pokryć wszystkiego w 100%. Dodałem testy jako przykład do jednego komponentu `FormField`, do hooka `useForm` i do funkcji pomocniczych. Nawet tam nie sprawdzam wsystkich przypadków.
 
 Podsumowując, chociaż rozwiązanie stworzone "od zera" zajęło więcej niż myślałem oraz zwiększyło skomplikowanie projektu to chciałem pokazać zrozumienie tematu oraz swoje decyzje. W prawdziwym projekcie korzystałbym z zaawansowanych bibliotek i gotowych baz komponentów, aby skrócić czas developmentu i zwiększyć skalowalność oraz dostępność aplikacji.
